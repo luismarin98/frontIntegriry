@@ -1,32 +1,37 @@
 import { useState } from "react"
 import { ClienteType } from "../../../Interfaces/ClienteType";
-/* import axios from "axios"; */
-/* import { useDispatch } from "react-redux"; */
-/* import { getCliente } from "../../../Redux/Client/client.slice"; */
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { getCliente } from "../../../Redux/Client/client.slice";
 import { useNavigate } from "react-router-dom";
+import { AuthDTO } from "../../../Interfaces/Auth";
+import { jwtDecode } from "jwt-decode";
+
+interface TokenDecoded {
+    sub: ClienteType
+}
 
 export const useClient = () => {
-    const [client, /* setClient */] = useState<ClienteType | undefined>();
     const [loading, setIsLoading] = useState<boolean>(false);
 
-/*     const dispatch = useDispatch(); */
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const get = async (/* username: string, password: string */) => {
+    const post = async (auth: AuthDTO) => {
         setIsLoading(true);
-        navigate('/dashboard')
-/*         await axios.get<ClienteType>(`${process.env.REACT_APP_RUTA_API}/cliente?username=${username}&password=${password}`)
+        await axios.post<string>(`http://localhost:5000/api/prueba_integrity/Usuario/auth`, { ...auth })
             .then((res) => {
-                setClient(res.data);
-                dispatch(getCliente(res.data));
-                localStorage.setItem('cliente', JSON.stringify(res.data));
+                localStorage.setItem('token', JSON.stringify(res.data));
+                const cliente_data: ClienteType = jwtDecode<TokenDecoded>(res.data).sub;
+                dispatch(getCliente(cliente_data));
+                navigate('/dashboard');
                 setIsLoading(false);
             })
             .catch((err) => {
                 console.error(err);
                 setIsLoading(false);
-            }); */
+            });
     }
 
-    return { get, client, loading }
+    return { post, loading }
 }

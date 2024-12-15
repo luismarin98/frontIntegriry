@@ -1,24 +1,20 @@
 import { FC, MouseEvent, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import LoginContext, { ILoginContext } from "./provider";
-
-interface LoginRequest {
-    username: string;
-    password: string;
-}
+import { AuthDTO } from "../../Interfaces/Auth";
 
 export const LOGIN_FEATURE: FC = () => {
-    const initalValues: LoginRequest | undefined = undefined;
+    const initalValues: AuthDTO | undefined = undefined;
     const methods = useForm({ defaultValues: initalValues });
 
-    const { get } = useContext(LoginContext) as ILoginContext;
-    const { getValues, reset, register } = useForm<LoginRequest>();
+    const { post } = useContext(LoginContext) as ILoginContext;
+    const { getValues, reset, register } = useForm<AuthDTO>();
 
     const handle_login = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         const data = getValues();
         if (!data.username || !data.password) return;
-        get(data.username, data.password);
+        post(data);
         reset();
     }
 

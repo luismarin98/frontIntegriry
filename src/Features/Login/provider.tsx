@@ -1,19 +1,19 @@
 import { createContext, ReactNode } from "react";
 import { useClient } from "./hooks/useClient";
 import { ClienteType } from "../../Interfaces/ClienteType";
+import { AuthDTO } from "../../Interfaces/Auth";
 
 export interface ILoginContext {
-    client: ClienteType | undefined
-    get: (username: string, password: string) => Promise<void>
+    post: (auth: AuthDTO) => Promise<void>
     loading: boolean
 }
 
 const LoginContext = createContext({});
 
 export const LoginProvider = ({ children }: { children: ReactNode }) => {
-    const { client, get, loading } = useClient();
-    
-    const storage: ILoginContext = { client, get, loading }
+    const { post, loading } = useClient();
+
+    const storage: ILoginContext = { post, loading }
 
     return <LoginContext.Provider value={storage}>{children}</LoginContext.Provider>
 }

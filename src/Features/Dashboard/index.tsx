@@ -2,7 +2,7 @@ import { FC, MouseEvent, useContext } from "react"
 import { Link, Outlet } from "react-router-dom"
 import DashboardContext, { IDashboardContext } from "./provider";
 import { ModalForm } from "../../Components/ModalForm";
-/* import { isAuthenticated } from "../../App"; */
+import { isAuthenticated } from "../../App";
 
 interface IButtonNavigation {
     title: string;
@@ -36,7 +36,7 @@ export const DASHBOARD_FEATURE: FC = () => {
     return (
         <div className="w-full h-full flex justify-between items-center flex-col p-2">
             <nav className="w-full flex justify-between items-center p-2 shadow-sm shadow-neutral-800 bg-neutral-500 bg-opacity-50 md:bg-opacity-30 dark:bg-neutral-600 dark:bg-opacity-25 backdrop-blur-md rounded-md">
-                <Link className="uppercase bg-neutral-200 dark:bg-white/20 rounded-md px-5 py-1 shadow-md" to={/* isAuthenticated() ? '/' :  */'/dashboard'}>Inventario</Link>
+                <Link className="uppercase bg-neutral-200 dark:bg-white/20 rounded-md px-5 py-1 shadow-md" to={isAuthenticated() ? '/' : '/dashboard'}>Inventario</Link>
                 <div className="hidden md:flex flex-row items-center justify-center gap-2 ">
                     {
                         EventosNavegacion.map((data, i) => <button onClick={data.onClick} className="bg-neutral-300 text-black px-5 py-0.5 rounded-md shadow-inner shadow-neutral-600" key={i}>{data.title}</button>)

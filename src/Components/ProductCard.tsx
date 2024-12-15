@@ -2,15 +2,17 @@ import { MouseEvent, useContext } from "react";
 import DashboardContext, { IDashboardContext } from "../Features/Dashboard/provider";
 import { ProductoType } from "../Interfaces/ProductoType";
 import { setProducto } from "../Redux/Productos/productos.slice";
+import { useDispatch } from "react-redux";
 
 export const PRODUCT_CARD_COMPONENT = ({ product }: { product: ProductoType }) => {
     const { isOpen, setIsOpen, del, setIsEdit } = useContext(DashboardContext) as IDashboardContext;
+    const dispatch = useDispatch();
 
     const handle_edit = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        dispatch(setProducto(product));
         setIsOpen(!isOpen);
         setIsEdit(true);
-        setProducto(product);
     }
 
     const handle_del = (event: MouseEvent<HTMLButtonElement>) => {

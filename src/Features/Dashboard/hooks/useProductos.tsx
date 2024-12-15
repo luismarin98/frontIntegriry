@@ -1,53 +1,83 @@
 import { useState } from "react"
 import { ProductoType } from "../../../Interfaces/ProductoType";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { getProductos, setProducto } from "../../../Redux/Productos/productos.slice";
 
 export const useProductos = () => {
-    const [producto, setProducto] = useState<ProductoType | undefined>();
     const [loading, setIsLoading] = useState<boolean>(false);
+    const dispatch = useDispatch();
 
     const get = async () => {
         setIsLoading(true);
-        await axios.get<ProductoType>(`${process.env.REACT_APP_RUTA_API}/productos`)
-            .then((res) => {
-                setProducto(res.data)
-                //localStorage.setItem('cliente', JSON.stringify(res.data));
+        const gt = axios.get<ProductoType[]>(`${process.env.REACT_APP_RUTA_API}/Producto`);
+        toast.promise(gt, {
+            loading: 'Obteniendo productos',
+            success: (res) => {
                 setIsLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setIsLoading(false);
-            });
+                dispatch(getProductos(res.data));
+                return 'datos cargados con exito';
+            },
+            error: (err) => err.response!.data
+        })
     }
 
     const getID = async (id: number) => {
         setIsLoading(true);
-        await axios.get(`${process.env.REACT_APP_RUTA_API}/productos/${id}`).then(
-            (res) => {
-                setProducto(res.data);
+        const gt_id = axios.get(`${process.env.REACT_APP_RUTA_API}/Producto/${id}`);
+        toast.promise(gt_id, {
+            loading: 'Obteniendo informacion',
+            success: (res) => {
+                dispatch(setProducto(res.data));
                 setIsLoading(false);
-            }
-        ).catch(
-            (err) => {
-                console.error(err);
-                setIsLoading(false);
-            }
-        );
+                return 'Datos cargados exitosamente';
+            },
+            error: (err) => err.response!.data
+        })
     }
 
     const post = async (producto: ProductoType) => {
         setIsLoading(true);
-        await axios.post(`${process.env.REACT_APP_RUTA_API}/producto`, { ...producto });
+        const res = axios.post(`${process.env.REACT_APP_RUTA_API}/Producto`, { ...producto });
+        toast.promise(res, {
+            loading: 'Guardando producto',
+            success: (res) => {
+                if (res.status === 200) return 'Producto guardado con exito'
+                setIsLoading(false);
+                return 'Algo sucedio, intente nuevamente'
+            },
+            error: (err) => err.response!.data
+        })
     }
+    
     const put = async (producto: ProductoType) => {
         setIsLoading(true);
-        await axios.put(`${process.env.REACT_APP_RUTA_API}/producto`, { ...producto });
+        const res = axios.put(`${process.env.REACT_APP_RUTA_API}/Producto`, { ...producto });
+        toast.promise(res, {
+            loading: 'Guardando producto',
+            success: (res) => {
+                if (res.status === 200) return 'Producto guardado con exito'
+                setIsLoading(false);
+                return 'Algo sucedio, intente nuevamente'
+            },
+            error: (err) => err.response!.data
+        })
     }
 
     const del = async (id: number) => {
         setIsLoading(true);
-        await axios.delete(`${process.env.REACT_APP_RUTA_API}/producto/${id}`);
+        const res = axios.delete(`${process.env.REACT_APP_RUTA_API}/Producto/${id}`);
+        toast.promise(res, {
+            loading: 'Guardando producto',
+            success: (res) => {
+                if (res.status === 200) return 'Producto guardado con exito'
+                setIsLoading(false);
+                return 'Algo sucedio, intente nuevamente'
+            },
+            error: (err) => err.response!.data
+        })
     }
 
-    return { producto, loading, get, getID, post, put, del }
+    return { loading, get, getID, post, put, del }
 }

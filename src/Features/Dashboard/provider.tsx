@@ -4,10 +4,9 @@ import { ProductoType } from "../../Interfaces/ProductoType";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
 export interface IDashboardContext {
-    get: (id: number) => Promise<void>
+    get: () => Promise<void>
     loading: boolean
     isEdit: boolean
-    producto: ProductoType | undefined
     setIsEdit: Dispatch<SetStateAction<boolean>>
     getID: (id: number) => Promise<void>
     post: (producto: ProductoType) => Promise<void>
@@ -22,13 +21,13 @@ export interface IDashboardContext {
 const DashboardContext = createContext({});
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
-    const { get, getID, post, put, del, loading, producto } = useProductos();
+    const { get, getID, post, put, del, loading } = useProductos();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
-    const storage: IDashboardContext = { isEdit, setIsEdit, get, loading, producto, isOpen, setIsOpen, navigate, getID, post, put, del }
+    const storage: IDashboardContext = { isEdit, setIsEdit, get, loading, isOpen, setIsOpen, navigate, getID, post, put, del }
 
     return <DashboardContext.Provider value={storage}>{children}</DashboardContext.Provider>
 }

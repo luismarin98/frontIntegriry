@@ -20,9 +20,7 @@ const FormularioProducto = () => {
         },
     });
 
-    const onSubmit = (data: ProductoType) => {
-        console.log('Datos del formulario:', data);
-    };
+    const onSubmit = (data: ProductoType) => { console.log('Datos del formulario:', data) };
 
     return (
         <div className="w-full">
