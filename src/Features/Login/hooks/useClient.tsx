@@ -7,10 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { AuthDTO } from "../../../Interfaces/Auth";
 import { jwtDecode } from "jwt-decode";
 
-interface TokenDecoded {
-    sub: ClienteType
-}
-
 export const useClient = () => {
     const [loading, setIsLoading] = useState<boolean>(false);
 
@@ -19,12 +15,12 @@ export const useClient = () => {
 
     const post = async (auth: AuthDTO) => {
         setIsLoading(true);
-        await axios.post<string>(`http://localhost:5000/api/prueba_integrity/Usuario/auth`, { ...auth })
+        await axios.post<string>(`${process.env.REACT_APP_RUTA_API}/Usuario/auth`, { ...auth })
             .then((res) => {
                 localStorage.setItem('token', JSON.stringify(res.data));
-                const cliente_data: ClienteType = jwtDecode<TokenDecoded>(res.data).sub;
+                const cliente_data: ClienteType = JSON.parse(jwtDecode(res.data).sub!);
                 dispatch(getCliente(cliente_data));
-                navigate('/dashboard');
+                navigate(`/dashboard/${cliente_data!.id}`);
                 setIsLoading(false);
             })
             .catch((err) => {

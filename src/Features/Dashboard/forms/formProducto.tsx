@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { ProductoType } from '../../../Interfaces/ProductoType';
+import DashboardContext, { IDashboardContext } from '../provider';
+import { useSelector } from 'react-redux';
+import { productoSelector } from '../../../Redux/Productos/productos.selector';
 
 const FormularioProducto = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<ProductoType>({
-        defaultValues: {
-            id: 1,
-            nombre: 'Producto 1',
-            precio: 29.99,
-            imagen: 'https://via.placeholder.com/200',
-            estado: true,
-            fecha_creacion: '',
-            id_compania: 1,
-            id_proveedor: 1,
-            peso: 10.5,
-            stock: true,
-            datos_auditoria: 'Ejemplo carta producto 1',
-            fecha_vencimiento: '',
-        },
-    });
+    const { post, put, isEdit, setIsEdit, setIsOpen } = useContext(DashboardContext) as IDashboardContext
+    const producto = useSelector(productoSelector);
 
-    const onSubmit = (data: ProductoType) => { console.log('Datos del formulario:', data) };
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<ProductoType>({ defaultValues: producto! });
+
+    const onSubmit = (data: ProductoType) => {
+        if (isEdit) {
+            put(data);
+            setIsEdit(false);
+        } else {
+            post(data);
+        }
+        setIsOpen(false);
+        reset();
+    };
 
     return (
         <div className="w-full">

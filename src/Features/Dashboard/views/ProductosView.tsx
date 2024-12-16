@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, MouseEvent, useContext, useState } from "react";
 import { ProductoType } from "../../../Interfaces/ProductoType";
 import { PAGINACION_COMPONENT } from "../../../Components/Paginacion";
 import { PRODUCT_CARD_COMPONENT } from "../../../Components/ProductCard";
@@ -10,7 +10,7 @@ import { useAppSelector } from "../../../Redux/store";
 
 export const PRODUCTOS_VIEW: FC = () => {
     const { isOpen, setIsOpen, get } = useContext(DashboardContext) as IDashboardContext;
-    useEffect(() => { get() }, [])
+
     const productos = useAppSelector(ListaProductosSelector);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 4;
@@ -23,13 +23,17 @@ export const PRODUCTOS_VIEW: FC = () => {
 
     const handleOpenDialogNav = () => setIsOpen(prev => !prev);
 
+    const handle_getAllProductos = (event: MouseEvent<HTMLButtonElement>) => { event.preventDefault(); get(); }
+
     return (
         <>
-            <div className="container mx-auto p-4 flex items-center justify-center flex-col shadow-neutral-800 bg-neutral-500 bg-opacity-30 
-                       md:bg-opacity-30 dark:bg-neutral-600 dark:bg-opacity-20 backdrop-blur-md rounded-md">
+            <div className="container mx-auto p-4 flex items-center justify-center flex-col shadow-neutral-800 bg-neutral-500 bg-opacity-30 md:bg-opacity-30 dark:bg-neutral-600 dark:bg-opacity-20 backdrop-blur-md rounded-md">
                 <div className="flex items-center justify-between w-full">
-                    <h1 className="text-2xl font-bold mb-4">Lista de Productos</h1>
-                    <button className="px-6 py-1 bg-neutral-50 rounded-md hover:bg-neutral-200" onClick={handleOpenDialogNav}>Agregar</button>
+                    <h1 className="text-2xl font-bold mb-4 text-white">Lista de Productos</h1>
+                    <div className="flex items-center gap-1 flex-row">
+                        <button className="px-6 py-1 bg-neutral-50 rounded-md hover:bg-neutral-200" onClick={handleOpenDialogNav}>Agregar</button>
+                        <button className="px-6 py-1 bg-neutral-50 rounded-md hover:bg-neutral-200" onClick={handle_getAllProductos}><span className="material-symbols-outlined">restart_alt</span></button>
+                    </div>
                 </div>
                 {
                     currentProducts.length > 0 ? (
@@ -43,7 +47,7 @@ export const PRODUCTOS_VIEW: FC = () => {
                                 onPageChange={setCurrentPage}
                             />
                         </>
-                    ) : (<p className="text-xl font-bold">Sin datos</p>)
+                    ) : (<p className="text-sm font-semibold text-white">Sin datos registrados, seleccione el boton de recarga para poder mostrar los datos</p>)
                 }
 
             </div>

@@ -7,7 +7,7 @@ export const LOGIN_FEATURE: FC = () => {
     const initalValues: AuthDTO | undefined = undefined;
     const methods = useForm({ defaultValues: initalValues });
 
-    const { post } = useContext(LoginContext) as ILoginContext;
+    const { post, loading } = useContext(LoginContext) as ILoginContext;
     const { getValues, reset, register } = useForm<AuthDTO>();
 
     const handle_login = (event: MouseEvent<HTMLButtonElement>) => {
@@ -52,7 +52,7 @@ export const LOGIN_FEATURE: FC = () => {
                         </div>
                     </div>
                     <div className="flex justify-center items-center gap-3">
-                        <button onClick={handle_login} className="px-6 py-0.1 bg-transparent ring-1 ring-white rounded-md text-white hover:bg-neutral-50 hover:bg-opacity-20">Acceder</button>
+                        <button disabled={loading} onClick={handle_login} className="px-6 py-0.1 bg-transparent ring-1 ring-white rounded-md text-white hover:bg-neutral-50 hover:bg-opacity-20">Acceder</button>
                         <button onClick={handle_register} className="px-6 py-0.1 bg-transparent ring-1 ring-white rounded-md text-white hover:bg-neutral-50 hover:bg-opacity-20">Registrarse</button>
                     </div>
                 </div>
