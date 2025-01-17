@@ -12,7 +12,7 @@ interface IButtonNavigation {
 
 export const DASHBOARD_FEATURE: FC = () => {
     const { isOpen, setIsOpen, navigate } = useContext(DashboardContext) as IDashboardContext;
-    const tokenData: string | null = localStorage.getItem('token');
+    const tokenData: string | null = localStorage.getItem('usuario');
     let cliente: ClienteType | null = null;
 
     if (tokenData) {

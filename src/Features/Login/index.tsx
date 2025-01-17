@@ -2,6 +2,7 @@ import { FC, MouseEvent, useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import LoginContext, { ILoginContext } from "./provider";
 import { AuthDTO } from "../../Interfaces/Auth";
+import { InputComponent } from "../../Components/InputComponent";
 
 export const LOGIN_FEATURE: FC = () => {
     const initalValues: AuthDTO | undefined = undefined;
@@ -25,7 +26,7 @@ export const LOGIN_FEATURE: FC = () => {
 
     return (
         <div className="w-full h-full flex items-center justify-center">
-            <div className="w-1/3 h-1/3 flex justify-between items-center p-5 shadow-sm shadow-neutral-800 bg-neutral-500 bg-opacity-30 md:bg-opacity-30 dark:bg-neutral-600 dark:bg-opacity-20 backdrop-blur-md rounded-md">
+            <div className="w-5/6 h-auto md:w-1/3 md:h-1/3 flex justify-between items-center p-5 shadow-sm shadow-neutral-800 bg-neutral-500 bg-opacity-30 md:bg-opacity-30 dark:bg-neutral-600 dark:bg-opacity-20 backdrop-blur-md rounded-md">
                 <div className="flex flex-col w-full h-full gap-3">
                     <div className="w-full flex flex-row items-center gap-2 text-white justify-between">
                         <div className="flex flex-row gap-2 items-center">
@@ -40,14 +41,8 @@ export const LOGIN_FEATURE: FC = () => {
                     <div className="text-white w-full h-full flex justify-center items-center">
                         <div className="flex flex-col gap-2 w-full">
                             <FormProvider {...methods}>
-                                <label className="flex flex-row justify-around px-2">
-                                    <p className="text-center w-full">Usuario</p>
-                                    <input {...register('username')} type="text" className="ring-1 ring-white bg-transparent rounded-md w-full text-center" />
-                                </label>
-                                <label className="flex flex-row justify-around px-2">
-                                    <p className="text-center w-full">Contraseña</p>
-                                    <input {...register('password')} type="password" className="ring-1 ring-white bg-transparent rounded-md w-full text-center" />
-                                </label>
+                                <InputComponent children="Usuario" type="text" register={register('username')} />
+                                <InputComponent children="Contraseña" type="password" register={register('password')} />
                             </FormProvider>
                         </div>
                     </div>

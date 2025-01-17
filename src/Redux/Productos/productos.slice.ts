@@ -5,14 +5,10 @@ const producto_slice = createSlice({
     name: 'producto_slice',
     initialState: prodcuto_initialState,
     reducers: {
-        getProductos: (state: ProductoState, action) => {
-            if (action.payload !== null) state.producto_list = action.payload;
-        },
-        setProducto: (state: ProductoState, action) => {
-            if (action.payload !== null) state.producto = action.payload;
-        }
+        getProductos: (state: ProductoState, action) => { if (action.payload !== null) state.producto_list = action.payload },
+        getProducto: (state: ProductoState, action) => { if (action.payload !== null) state.producto = action.payload }
     }
 })
 
-export const { getProductos, setProducto } = producto_slice.actions;
+export const { getProductos, getProducto } = producto_slice.actions;
 export { producto_slice }

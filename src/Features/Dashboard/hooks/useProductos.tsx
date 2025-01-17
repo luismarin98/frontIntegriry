@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { ProductoType } from "../../../Interfaces/ProductoType";
+import { ProductoResponse, ProductoType } from "../../../Interfaces/ProductoType";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { getProductos, setProducto } from "../../../Redux/Productos/productos.slice";
+import { getProductos, getProducto } from "../../../Redux/Productos/productos.slice";
 
 export const useProductos = () => {
     const [loading, setIsLoading] = useState<boolean>(false);
@@ -11,12 +11,12 @@ export const useProductos = () => {
 
     const get = async () => {
         setIsLoading(true);
-        const gt = axios.get<ProductoType[]>(`${process.env.REACT_APP_RUTA_API}/Producto`);
+        const gt = axios.get<ProductoResponse>(`${process.env.REACT_APP_RUTA_API}/Producto`);
         toast.promise(gt, {
             loading: 'Obteniendo productos',
             success: (res) => {
                 setIsLoading(false);
-                dispatch(getProductos(res.data));
+                dispatch(getProductos(res.data.producto));
                 return 'datos cargados con exito';
             },
             error: (err) => err.response!.data
@@ -29,7 +29,7 @@ export const useProductos = () => {
         toast.promise(gt_id, {
             loading: 'Obteniendo informacion',
             success: (res) => {
-                dispatch(setProducto(res.data));
+                dispatch(getProducto(res.data));
                 setIsLoading(false);
                 return 'Datos cargados exitosamente';
             },
